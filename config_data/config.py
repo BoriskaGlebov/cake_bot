@@ -12,6 +12,7 @@ else:
 class SiteSettings:
     """Класс получения базовых настроек"""
     bot_key: str = os.getenv('BOT_TOKEN')
+    bot_admin:str=os.getenv('ADMINISTRATOR')
 
 
 site_tg_settings = SiteSettings()

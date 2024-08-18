@@ -9,9 +9,11 @@ from aiogram.types import Message, ReplyKeyboardRemove
 from tg_api.keyboards.reply.keybord_start import start_kb
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import default_state
-from database.core import def_insert_user
-from database.models.models import User
-from tg_api.utils.set_bot_commands import set_main_menu_admdin,set_main_menu
+# from database.core import def_insert_user
+# from database.models.models import User
+from tg_api.utils.set_bot_commands import set_main_menu_admin, set_main_menu
+
+from config_data.config import site_tg_settings
 
 logger = logging.getLogger(f'main.tg_api.handlers.custom_handlers.{os.path.basename(__file__)}')
 sys.excepthook = any_exception
@@ -24,20 +26,23 @@ async def start_cmd(message: Message, bot: Bot, state: FSMContext):
     """Действия бота по команде start"""
     logger.debug('Пользователь нажал кнопку start')
     user = message.from_user
-    if user.username == 'BorisisTheBlade':
-        await set_main_menu_admdin(bot)
+    if user.username == site_tg_settings.bot_admin:
+        await set_main_menu_admin(bot)
     else:
         await set_main_menu(bot)
     me = await bot.get_me()
     await state.clear()
     await message.answer(f'Привет <b>{user.username}</b>!!!\n'
                          f'Меня зовут <b>{me.first_name}</b> и я могу отлично '
-                         f'помочь с поиском фильмов на вечер.🎫',
+                         f'помочь с десертом.\n'
+                         f'Дальше <b>нужно</b> выбрать какую то кнопку',
                          reply_markup=start_kb())
+
     await message.answer_sticker(
-        sticker='CAACAgIAAxkBAAELLfVlpBnLljNASTHd5o59TtC0zuC-'
-                'sAACXQEAAooSqg7e1UbQcaOvXjQE')
-    def_insert_user(User, user.id, user.username)
+        sticker='CAACAgIAAxkBAAEMqzdmwh2TRAoOkqTa'
+                'MnCOLcf36FoUjwACiwEAAiteUwujYbxpJDSDUDUE')
+    await message.answer(text='Сюда можно добавить все что угодно')
+    # def_insert_user(User, user.id, user.username)
     logger.info(f'{start_cmd.__name__} - отработала хорошо')
 
 
