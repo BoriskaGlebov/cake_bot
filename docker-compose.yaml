@@ -1,0 +1,32 @@
+services:
+
+  telegram_bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: telegram_bot_container
+    hostname: hostname_telegram_bot
+    restart: always
+    environment:
+      TZ: "Europe/Moscow"
+    networks:
+      - default
+    volumes:
+      - /home/user/Downloads/app:/bot/app
+      - ~/Downloads/app/config_data:/bot/config_data
+#    volumes:
+#      - type: bind
+#        source: /home/user/Downloads/app/var
+#        target: /bot/var
+#      - /home/user/Downloads/app:/bot/app
+#      - some_vol:/bot/config_data
+#
+#volumes:
+#  some_vol:
+
+networks:
+  default:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.28.0.0/16
