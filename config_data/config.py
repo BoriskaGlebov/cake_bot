@@ -13,6 +13,8 @@ class SiteSettings:
     """Класс получения базовых настроек"""
     bot_key: str = os.getenv('BOT_TOKEN')
     bot_admin:str=os.getenv('ADMINISTRATOR')
+    vk_token:str=os.getenv('VK_TOKEN')
+    vk_login:str=os.getenv('VK_LOGIN')
 
 
 site_tg_settings = SiteSettings()
