@@ -9,6 +9,7 @@ from aiogram.types import Message, ReplyKeyboardRemove
 from tg_api.keyboards.reply.keybord_start import start_kb
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import default_state
+from database.utilits.CRUD import CRUDInterface as crud
 # from database.core import def_insert_user
 # from database.models.models import User
 from tg_api.utils.set_bot_commands import set_main_menu_admin, set_main_menu
@@ -24,26 +25,27 @@ router = Router()
 @router.message(Command('start'))
 async def start_cmd(message: Message, bot: Bot, state: FSMContext):
     """Действия бота по команде start"""
-    logger.debug('Пользователь нажал кнопку start')
+    logger.debug(f'{start_cmd.__name__} - Пользователь нажал кнопку start')
     user = message.from_user
     if user.username == site_tg_settings.bot_admin:
         await set_main_menu_admin(bot)
     else:
         await set_main_menu(bot)
     me = await bot.get_me()
+    buttons=['Бенто торт','Кейк попс']
     await state.clear()
     await message.answer(f'Привет <b>{user.username}</b>!!!\n'
                          f'Меня зовут <b>{me.first_name}</b> и я могу отлично '
                          f'помочь с десертом.\n'
                          f'Дальше <b>нужно</b> выбрать какую то кнопку',
-                         reply_markup=start_kb())
+                         reply_markup=start_kb(buttons))
 
     await message.answer_sticker(
         sticker='CAACAgIAAxkBAAEMqzdmwh2TRAoOkqTa'
                 'MnCOLcf36FoUjwACiwEAAiteUwujYbxpJDSDUDUE')
     await message.answer(text='Сюда можно добавить все что угодно')
-    # def_insert_user(User, user.id, user.username)
-    logger.info(f'{start_cmd.__name__} - отработала хорошо')
+    crud.insert_single_user(user.username,user.id)
+    logger.debug(f'{start_cmd.__name__} - отработала хорошо')
 
 
 # Нетрудно догадаться, что следующие два хэндлера можно

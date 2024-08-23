@@ -18,5 +18,6 @@ class SiteSettings:
 
 
 site_tg_settings = SiteSettings()
+
 if __name__ == '__main__':
     print(site_tg_settings.bot_key)
